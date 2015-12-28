@@ -6,6 +6,13 @@ if [[ "$0" != "zsh" ]]; then
 fi
 
 _download () {
+
+  # Hack for dev - I don't want this script breaking/changing my files
+  if [[ -L "$2" ]]; then
+    echo "Skipping $1 due to symlink at $2"
+    return
+  fi
+
   echo "Downloading $1..."
   curl -fSL# "$1" -o "$2"
 }
