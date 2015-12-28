@@ -1,5 +1,8 @@
 # zsh-snarf
-Snarf theme for [Oh-My-Zsh](http://ohmyz.sh/). Requires the `battery` and `jsontools` plugins.
+Snarf theme for [Oh-My-Zsh](http://ohmyz.sh/). Designed with dark terminal themes in mind (particularly Monokai, but
+Solarized works, too). Requires the `battery` and `jsontools` plugins, and a
+[Nerd Font](https://github.com/ryanoasis/nerd-fonts) typeface with Font Awesome, Devicons, and Powerline symbols patched
+in (using a "Nerd Font Complete" variation is probably the easiest way to go).
 
 ### Installation
 ```bash
@@ -11,4 +14,5 @@ directories, and imports the iTerm2 preset. You are still required to switch to 
 
 ### Screenshot
 ![Screenshot](screenshot.png)
-(Snarf theme, with Monokai Snarf iTerm2 colorscheme, and Knack typeface AKA Nerd Font-patched Hack typeface)
+(Snarf theme, with Monokai Snarf iTerm2 colorscheme, and Knack typeface AKA
+Nerd Font-patched [Hack](http://sourcefoundry.org/hack/) typeface)
