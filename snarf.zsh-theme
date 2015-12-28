@@ -12,7 +12,7 @@
 # I also recommend a Monokai theme and, if you're using Mac OS X, [iTerm 2](http://www.iterm2.com/) over Terminal.app
 # as it has significantly better color fidelity.
 #
-# Required Oh-My-Zsh plugins: battery, jsontools
+# Required Oh-My-Zsh plugins: battery
 #
 #######################################################################################################################
 
@@ -28,6 +28,7 @@ CURRENT_BG='NONE'
   FA_HOME=$'\uf015'
   DI_NODE=$'\ue718'
   DI_DNX=$'\ue77f'
+  DI_RUBY=$'\ue791'
   DI_GIT=$'\ue725'
   PL_SEGMENT_SEPARATOR=$'\ue0b0'
   PL_DIR_SEPARATOR=$'\ue0b1'
@@ -78,6 +79,13 @@ prompt_trim() {
   echo -en "$1" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
 }
 
+# Find if a file exists in the PWD tree
+prompt_proj_tree() {
+  setopt extended_glob
+  local file=$(echo -n (../)#$1(:a))
+  [[ -f $file ]]
+}
+
 #######################################################################################################################
 ### Prompt components
 # Each component will draw itself, and hide itself if no information needs to be shown
@@ -89,7 +97,7 @@ prompt_trim() {
 prompt_context() {
   local symbols bg fg
   symbols=()
-  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{1}%}$FA_X" # red X
+  [[ $1 -ne 0 ]] && symbols+="%{%F{1}%}$FA_X" # red X
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{3}%}$FA_JOBS" # yellow "background jobs icon"
 
   if [[ $UID -eq 0 ]]; then
@@ -102,24 +110,27 @@ prompt_context() {
   prompt_segment $bg NONE "$symbols"
 }
 
-# Node: version
-prompt_node() {
-  [[ ! $(command -v node) ]] && return
+# Project environment: node/dnx/ruby version
+prompt_proj_env() {
+  local version icon
 
-  local nodeVers=$(node -v 2>/dev/null)
-  if [[ -f package.json && $(cat package.json | is_json) -eq "True" && -n $nodeVers ]]; then
-    prompt_segment 005 000 "$DI_NODE $nodeVers" # magenta is node
+  if $(prompt_proj_tree package.json); then
+    version=$(node -v 2>/dev/null) || version='MISSING'
+    icon=$DI_NODE
+
+  elif $(prompt_proj_tree project.json); then
+    version=$(dnx --version 2>/dev/null | sed -ne 's/.*Version:[[:space:]]*\([[:digit:]]\..*\)/v\1/p') || version='MISSING'
+    icon=$DI_DNX
+
+  elif $(prompt_proj_tree Gemfile); then
+    version=$(ruby -e 'print "v"+RUBY_VERSION' 2>/dev/null) || version='MISSING'
+    icon=$DI_RUBY
+
+  else
+    return
   fi
-}
 
-# DNX: version
-prompt_dnx() {
-  [[ ! $(command -v dnx) ]] && return
-
-  local dnxVers=$(dnx --version 2>/dev/null | sed -ne 's/.*Version:[[:space:]]*\([[:digit:]]\..*\)/\1/p')
-  if [[ -f project.json && $(cat project.json | is_json) -eq "True" && -n dnxVers ]]; then
-    prompt_segment 005 000 "$DI_DNX v$dnxVers"
-  fi
+  prompt_segment 005 000 "$icon $version" # magenta is project environment
 }
 
 # Dir: current working directory
@@ -177,10 +188,8 @@ prompt_git() {
 #######################################################################################################################
 ### Main prompt
 build_prompt() {
-  RETVAL=$?
-  prompt_context
-  prompt_node
-  prompt_dnx
+  prompt_context $?
+  prompt_proj_env
   prompt_dir
   prompt_git
   prompt_end
