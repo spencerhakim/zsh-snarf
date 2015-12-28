@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/sh
 
 if [[ "$0" != "zsh" ]]; then
   echo 'Please run this script with zsh'
