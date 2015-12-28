@@ -6,7 +6,7 @@ if [[ "$0" != "zsh" ]]; then
 fi
 
 _download () {
-  echo Downloading "$1"...
+  echo "Downloading $1..."
   curl -fSL# "$1" -o "$2"
 }
 
@@ -15,7 +15,7 @@ source ~/.zshrc
 
 echo
 echo '************************************************************'
-echo 'Downloading zsh-snarf files...'
+echo 'Installing zsh-snarf...'
 
 # Install zsh theme
 _download 'https://raw.github.com/spencerhakim/zsh-snarf/master/snarf.zsh-theme' "$ZSH_CUSTOM/themes/snarf.zsh-theme"
@@ -39,6 +39,7 @@ mkdir -p "$FONT_DIR"
 _download 'https://raw.github.com/spencerhakim/zsh-snarf/master/Knack%20Regular%20Nerd%20Font%20Complete.otf'  \
   -o "$FONT_DIR/Knack Regular Nerd Font Complete.otf"
 
-echo -n 'Finished downloading zsh-snarf files. Remember to edit your ~/.zshrc; you may also need to quit/re-open iTerm2'
+echo '************************************************************'
+echo -n 'Finished installing zsh-snarf. Remember to edit your ~/.zshrc; you may also need to quit/re-open iTerm2'
 echo -n ' for the color preset and font to appear in their respective dropdown lists.'
 echo
