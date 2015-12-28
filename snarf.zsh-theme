@@ -11,8 +11,7 @@
 # I also recommend a Monokai theme and, if you're using Mac OS X, [iTerm 2](http://www.iterm2.com/) over Terminal.app
 # as it has significantly better color fidelity.
 #
-# Required plugins: battery, jsontools
-# Required software: GNU utilities (important if on Mac OS X; install them via `brew`)
+# Required zsh plugins: battery, jsontools
 #
 #######################################################################################################################
 
