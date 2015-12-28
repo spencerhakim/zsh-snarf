@@ -3,7 +3,7 @@ Snarf theme for [Oh-My-Zsh](http://ohmyz.sh/). Requires the `battery` and `jsont
 
 ### Installation
 ```bash
-zsh -c "$(wget https://raw.github.com/spencerhakim/zsh-snarf/master/install.sh -O -)"
+zsh -c "$(curl -fsSL https://raw.github.com/spencerhakim/zsh-snarf/master/install.sh)"
 ```
 
 This will not modify any settings; it only simplifies installation. It places the font and .zsh-theme in the appropriate
