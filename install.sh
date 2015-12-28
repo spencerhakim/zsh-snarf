@@ -19,8 +19,8 @@ COLORSCHEME=$(wget 'https://raw.githubusercontent.com/spencerhakim/zsh-snarf/mas
 defaults write com.googlecode.iterm2 'Custom Color Presets' -dict-add 'Monokai Snarf' "$COLORSCHEME"
 
 # Install font
-wget 'https://github.com/spencerhakim/zsh-snarf/raw/master/Knack%20Regular%20Nerd%20Font%20Complete.otf'  \
-    -nv -O "~/Library/Fonts/Knack Regular Nerd Font Complete.otf"
+wget 'https://raw.githubusercontent.com/spencerhakim/zsh-snarf/master/Knack%20Regular%20Nerd%20Font%20Complete.otf'  \
+    -nv -O "$HOME/Library/Fonts/Knack Regular Nerd Font Complete.otf"
 
 echo -n 'Finished downloading zsh-snarf files. Remember to edit your ~/.zshrc; you may also need to quit/re-open iTerm2'
 echo -n ' for the color preset and font to appear in their respective dropdown lists.'
