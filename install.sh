@@ -1,4 +1,11 @@
-#/bin/zsh
+#/bin/sh
+
+if [[ "$0" != "zsh" ]]; then
+  echo 'Please run this script with zsh'
+  exit 1
+fi
+
+# Important for $ZSH_CUSTOM, as it's not exported for some reason
 source ~/.zshrc
 
 echo
