@@ -1,5 +1,8 @@
 #/bin/zsh
+source ~/.zshrc
 
+echo
+echo '************************************************************'
 echo 'Downloading zsh-snarf files...'
 
 # Install any pre-reqs
