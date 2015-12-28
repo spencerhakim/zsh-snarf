@@ -77,11 +77,6 @@ prompt_trim() {
   echo -en "$1" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
 }
 
-# Test if command exists
-prompt_command() {
-  command -v $1 >/dev/null 2>&1
-}
-
 #######################################################################################################################
 ### Prompt components
 # Each component will draw itself, and hide itself if no information needs to be shown
@@ -108,7 +103,7 @@ prompt_context() {
 
 # Node: version
 prompt_node() {
-  if [[ $(prompt_command node) ]]; then
+  if [[ ! $(command -v node) ]]; then
     return
   fi
 
@@ -120,7 +115,7 @@ prompt_node() {
 
 # DNX: version
 prompt_dnx() {
-  if [[ $(prompt_command dnx) ]]; then
+  if [[ ! $(command -v dnx) ]]; then
     return
   fi
 
@@ -140,7 +135,7 @@ prompt_dir() {
 
 # Git: branch/detached head, dirty status
 prompt_git() {
-  if [[ $(prompt_command git) ]]; then
+  if [[ ! $(command -v git) ]]; then
     return
   fi
 
