@@ -169,11 +169,8 @@ prompt_git() {
     zstyle ':vcs_info:*' actionformats ' %u%c'
     vcs_info
 
-    local ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git rev-parse --short HEAD 2> /dev/null)"
-    local branch_name=${ref/refs\/heads\//$DI_GIT }
-    branch_name=$(prompt_truncate 15 "$branch_name")
-
-    echo -n "${branch_name}${vcs_info_msg_0_%% }${mode}"
+    local branch_name=$(prompt_truncate 15 "$(git_current_branch)")
+    echo -n "$DI_GIT ${branch_name}${vcs_info_msg_0_%% }${mode}"
   fi
 }
 
