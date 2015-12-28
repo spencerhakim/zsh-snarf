@@ -109,7 +109,7 @@ prompt_context() {
 
 # Node: version
 prompt_node() {
-  if[[ $(prompt_command node) -ne 0 ]]; then
+  if [[ $(prompt_command node) ]]; then
     return
   fi
 
@@ -121,7 +121,7 @@ prompt_node() {
 
 # DNX: version
 prompt_dnx() {
-  if[[ $(prompt_command dnx) -ne 0 ]]; then
+  if [[ $(prompt_command dnx) ]]; then
     return
   fi
 
@@ -141,7 +141,7 @@ prompt_dir() {
 
 # Git: branch/detached head, dirty status
 prompt_git() {
-  if[[ $(prompt_command git) -ne 0 ]]; then
+  if [[ $(prompt_command git) ]]; then
     return
   fi
 
