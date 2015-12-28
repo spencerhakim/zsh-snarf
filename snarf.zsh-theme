@@ -103,9 +103,7 @@ prompt_context() {
 
 # Node: version
 prompt_node() {
-  if [[ ! $(command -v node) ]]; then
-    return
-  fi
+  [[ ! $(command -v node) ]] && return
 
   local nodeVers=$(node -v 2>/dev/null)
   if [[ -f package.json && $(cat package.json | is_json) -eq "True" && -n $nodeVers ]]; then
@@ -115,9 +113,7 @@ prompt_node() {
 
 # DNX: version
 prompt_dnx() {
-  if [[ ! $(command -v dnx) ]]; then
-    return
-  fi
+  [[ ! $(command -v dnx) ]] && return
 
   local dnxVers=$(dnx --version 2>/dev/null | sed -ne 's/.*Version:[[:space:]]*\([[:digit:]]\..*\)/\1/p')
   if [[ -f project.json && $(cat project.json | is_json) -eq "True" && -n dnxVers ]]; then
@@ -135,22 +131,20 @@ prompt_dir() {
 
 # Git: branch/detached head, dirty status
 prompt_git() {
-  if [[ ! $(command -v git) ]]; then
+  if [[ ! $(command -v git) || $(git config --get oh-my-zsh.hide-status) -eq 1 ]]; then
     return
   fi
 
-  local ref dirty mode repo_path
-  repo_path=$(git rev-parse --git-dir 2>/dev/null)
-
   if $(git rev-parse --is-inside-work-tree >/dev/null 2>&1); then
-    dirty=$(parse_git_dirty)
-    ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git rev-parse --short HEAD 2> /dev/null)"
+    local dirty=$(parse_git_dirty)
     if [[ -n $dirty ]]; then
       prompt_segment 003 000 # yellow is dirty
     else
       prompt_segment 002 000 # green is clean
     fi
 
+    local repo_path="$(git rev-parse --git-dir 2>/dev/null)"
+    local mode
     if [[ -e "${repo_path}/BISECT_LOG" ]]; then
       mode=" <B>"
     elif [[ -e "${repo_path}/MERGE_HEAD" ]]; then
@@ -174,6 +168,7 @@ prompt_git() {
     zstyle ':vcs_info:*' actionformats ' %u%c'
     vcs_info
 
+    local ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git rev-parse --short HEAD 2> /dev/null)"
     local branch_name=${ref/refs\/heads\//$DI_GIT }
     branch_name=$(prompt_truncate 15 "$branch_name")
 
