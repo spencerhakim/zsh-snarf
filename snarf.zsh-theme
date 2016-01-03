@@ -82,6 +82,7 @@ prompt_trim() {
 # Find if a file exists in the PWD tree
 prompt_proj_tree() {
   setopt extended_glob
+  setopt null_glob
   local file=$(echo -n (../)#$1(:a))
   [[ -f $file ]]
 }
