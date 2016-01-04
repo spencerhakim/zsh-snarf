@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [[ "$0" != "zsh" ]]; then
   echo 'Please run this script with zsh'
@@ -9,12 +9,13 @@ _download () {
 
   # Hack for dev - I don't want this script breaking/changing my files
   if [[ -L "$2" ]]; then
-    echo "Skipping $1 due to symlink at $2"
+    echo "Skipping $1 due to symlink at $2\n"
     return
   fi
 
   echo "Downloading $1..."
   curl -fSL# "$1" -o "$2"
+  echo
 }
 
 # Important for $ZSH_CUSTOM, as it's not exported for some reason
@@ -53,7 +54,6 @@ _download                                                                       
   'https://raw.github.com/spencerhakim/zsh-snarf/master/Knack%20Regular%20Nerd%20Font%20Complete.otf' \
   "$FONT_DIR/Knack Regular Nerd Font Complete.otf"
 
-echo '************************************************************'
 echo -n 'Finished installing zsh-snarf. Remember to edit your ~/.zshrc; you may also need to quit/re-open iTerm2'
 echo -n ' for the color preset and font to appear in their respective dropdown lists.'
 echo
