@@ -26,6 +26,7 @@ CURRENT_BG='NONE'
   FA_X=$'\uf00d'
   FA_JOBS=$'\uf1da' # currently "fa-history" rewinding clock icon
   FA_HOME=$'\uf015'
+  FA_ROOT=$'\uf071' # currently "fa-warning" triangle with exclamation
   DI_NODE=$'\ue718'
   DI_DNX=$'\ue77f'
   DI_RUBY=$'\ue791'
@@ -79,12 +80,11 @@ prompt_trim() {
   echo -en "$1" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
 }
 
-# Find if a file exists in the PWD tree
+# Find project file in PWD tree
 prompt_proj_tree() {
   setopt extended_glob
   setopt null_glob
-  local file=$(echo -n (../)#$1(:a))
-  [[ -f $file ]]
+  echo -n (../)#$1
 }
 
 #######################################################################################################################
@@ -113,17 +113,17 @@ prompt_context() {
 
 # Project environment: node/dnx/ruby version
 prompt_proj_env() {
-  local version icon
 
-  if $(prompt_proj_tree package.json); then
+  local version icon
+  if [[ -f $(prompt_proj_tree package.json) ]]; then
     version=$(node -v 2>/dev/null) || version='MISSING'
     icon=$DI_NODE
 
-  elif $(prompt_proj_tree project.json); then
+  elif [[ -f $(prompt_proj_tree project.json) ]]; then
     version=$(dnx --version 2>/dev/null | sed -ne 's/.*Version:[[:space:]]*\([[:digit:]]\..*\)/v\1/p') || version='MISSING'
     icon=$DI_DNX
 
-  elif $(prompt_proj_tree Gemfile); then
+  elif [[ -f $(prompt_proj_tree Gemfile) ]]; then
     version=$(ruby -e 'print "v"+RUBY_VERSION' 2>/dev/null) || version='MISSING'
     icon=$DI_RUBY
 
@@ -136,9 +136,18 @@ prompt_proj_env() {
 
 # Dir: current working directory
 prompt_dir() {
-  local dir=${PWD/~/$FA_HOME }
-  dir=`echo -n $dir | sed -e "s/\// $PL_DIR_SEPARATOR /g"`
+  local dir
+  if [[ $PWD == "/" ]]; then
+    # In root
+    dir="$FA_ROOT "
+  elif [[ ${PWD##~} != $PWD ]]; then
+    # In $HOME or subdir
+    dir=${PWD/~/$FA_HOME }
+  else
+    dir=${PWD/\//$FA_ROOT  $PL_DIR_SEPARATOR }
+  fi
 
+  dir=`echo -n $dir | sed -e "s/\// $PL_DIR_SEPARATOR /g"`
   prompt_segment 004 000 "$dir" # blue is dir
 }
 
