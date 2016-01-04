@@ -25,6 +25,8 @@ echo '************************************************************'
 echo 'Installing zsh-snarf...'
 
 # Install zsh theme
+mkdir -p "$ZSH_CUSTOM/themes/"
+
 _download                                                                 \
   'https://raw.github.com/spencerhakim/zsh-snarf/master/snarf.zsh-theme'  \
   "$ZSH_CUSTOM/themes/snarf.zsh-theme"
