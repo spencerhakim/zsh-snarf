@@ -27,10 +27,12 @@ CURRENT_BG='NONE'
   FA_JOBS=$'\uf1da' # currently "fa-history" rewinding clock icon
   FA_HOME=$'\uf015'
   FA_ROOT=$'\uf071' # currently "fa-warning" triangle with exclamation
+  FA_COFFEE=$'\uf0f4'
   DI_NODE=$'\ue718'
   DI_DNX=$'\ue77f'
   DI_RUBY=$'\ue791'
   DI_GIT=$'\ue725'
+  DI_SCALA=$'\ue737'
   PL_SEGMENT_SEPARATOR=$'\ue0b0'
   PL_DIR_SEPARATOR=$'\ue0b1'
 }
@@ -127,6 +129,14 @@ prompt_proj_env() {
   elif [[ -f $(prompt_proj_tree Gemfile) ]]; then
     version=$(ruby -e 'print "v"+RUBY_VERSION' 2>/dev/null) || version='MISSING'
     icon=$DI_RUBY
+
+  elif [[ -f $(prompt_proj_tree build.sbt) ]]; then
+    version=$(java -version 2>&1 | grep -i version | awk -F'["_.]' '{print $3}') || version='MISSING'
+    icon=$DI_SCALA
+
+  elif [[ -f $(prompt_proj_tree pom.xml) ]]; then
+    version=$(java -version 2>&1 | grep -i version | awk -F'["_.]' '{print $3}') || version='MISSING'
+    icon=$FA_COFFEE
 
   else
     return
