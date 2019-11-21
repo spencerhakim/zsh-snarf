@@ -9,7 +9,7 @@
 # In order for this theme to render correctly, you will need a "Nerd Font"-patched typeface with Devicons, Font Awesome,
 # and Powerline symbols patched in. See [ryanoasis/nerd-fonts](https://github.com/ryanoasis/nerd-fonts) for more info.
 #
-# I also recommend a Monokai theme and, if you're using Mac OS X, [iTerm 2](http://www.iterm2.com/) over Terminal.app
+# I also recommend a Monokai theme and, if you're using macOS, [iTerm 2](http://www.iterm2.com/) over Terminal.app
 # as it has significantly better color fidelity.
 #
 # Required Oh-My-Zsh plugins: battery
@@ -86,6 +86,7 @@ prompt_trim() {
 prompt_proj_tree() {
   setopt extended_glob
   setopt null_glob
+
   files=( (../)#$1 )
   echo -n "${files[-1]}"
 }
@@ -118,11 +119,7 @@ prompt_context() {
 prompt_proj_env() {
 
   local version icon
-  if [[ -f $(prompt_proj_tree package.json) ]]; then
-    version=$(node -v 2>/dev/null) || version='MISSING'
-    icon=$DI_NODE
-
-  elif [[ -f $(prompt_proj_tree project.json) ]]; then
+  if [[ -f $(prompt_proj_tree project.json) ]]; then
     version=$(dnx --version 2>/dev/null | sed -ne 's/.*Version:[[:space:]]*\([[:digit:]]\..*\)/v\1/p') || version='MISSING'
     icon=$DI_DNX
 
@@ -137,6 +134,10 @@ prompt_proj_env() {
   elif [[ -f $(prompt_proj_tree pom.xml) ]]; then
     version=$(java -version 2>&1 | grep -i version | awk -F'["_.]' '{print $3}') || version='MISSING'
     icon=$FA_COFFEE
+
+  elif [[ -f $(prompt_proj_tree package.json) ]]; then
+    version=$(node -v 2>/dev/null) || version='MISSING'
+    icon=$DI_NODE
 
   else
     return
